@@ -1,0 +1,155 @@
+import random
+
+def intro():
+  print("=" * 40)
+  print("       Welcome to Out Of Debt!!!")
+  print("=" * 40)
+  print("You are stranded in UTP town for 7 days.")
+
+  starting_budget = random.randint(100,200)
+
+  print(f"You have only RM{starting_budget:.2f} to survive.")
+  print("Manage your money wisely and escape!")
+  print("Good Luck!\n")
+
+  name = input("Enter your character's name > ").strip()
+  print(f"\nWelcome {name.title()}!")
+  print(f"Your balance is RM{starting_budget:.2f}")
+
+  return name, starting_budget
+
+def display_status(name,starting_budget,day):
+    print("=" * 40)
+    print(f"DAY {day} - {name.upper()}'S SURVIVAL")
+    print(f"Remaining balance: RM{starting_budget:.2f}")
+    print("=" * 40)
+
+def breakfast_choice():
+  BREAKFAST_MENU = [
+    ("Roti Canai", 2.00),
+    ("Sandwich", 4.00),
+    ("Fried Noodle", 5.00),
+    ("Nasi Lemak", 7.00),
+]
+
+  breakfast_options = random.sample(BREAKFAST_MENU,3)
+
+  breakfast_options.append(("Skip Breakfast", 0.00))
+
+  print("\n--- TODAY'S BREAKFAST MENU ---")
+  for i, (dish, price) in enumerate(breakfast_options, start=1):
+      print(f"{i}. {dish:<32} RM{price:.2f}")
+
+  while True:
+      choice = input("\nEnter your choice (1-4) > ").strip()
+
+      if choice in ["1", "2", "3","4"]:
+          selected_index = int(choice) - 1
+          dish_name, dish_price = breakfast_options[selected_index]
+          print(f"\nYou selected: {dish_name} (RM{dish_price:.2f})")
+          return dish_price
+      else:
+          print("Invalid selection! Please enter 1-4.")
+
+
+def lunch_choice():
+  LUNCH_MENU = [
+    ("Economy Rice (2 vege)", 5.00),
+    ("Economy Rice (1 vege + 1 meat)", 7.00),
+    ("Economy Rice (2 meat)", 9.00),
+    ("Chicken Rice", 7.00),
+    ("Maggi", 3.00),
+]
+
+  lunch_options = random.sample(LUNCH_MENU, 3)
+
+  lunch_options.append(("Skip Lunch", 0.00))
+
+  print("\n--- TODAY'S LUNCH MENU ---")
+  for i, (dish, price) in enumerate(lunch_options, start=1):
+        print(f"{i}. {dish:<32} RM{price:.2f}")
+
+  while True:
+      choice = input("\nEnter your choice (1-4) > ").strip()
+
+      if choice in ["1","2","3","4"]:
+          selected_index = int(choice) - 1
+          dish_name, dish_price = lunch_options[selected_index]
+          print(f"\nYou selected: {dish_name} (RM{dish_price:.2f})")
+          return dish_price
+      else:
+          print("Invalid selection! Please enter 1-4.")
+
+def dinner_choice():
+  DINNER_MENU = [
+    ("Fried Rice", 6.00),
+    ("Burger", 5.00),
+    ("Soup Noodle", 5.00),
+    ("Maggi", 7.00),
+]
+
+  dinner_options = random.sample(DINNER_MENU,3)
+
+  dinner_options.append(("Skip Dinner", 0.00))
+
+  print("\n--- TODAY'S DINNER MENU ---")
+  for i, (dish, price) in enumerate(dinner_options, start=1):
+      print(f"{i}. {dish:<32} RM{price:.2f}")
+
+  while True:
+      choice = input("\nEnter your choice (1-4) > ").strip()
+
+      if choice in ["1", "2", "3","4"]:
+          selected_index = int(choice) - 1
+          dish_name, dish_price = dinner_options[selected_index]
+          print(f"\nYou selected: {dish_name} (RM{dish_price:.2f})")
+          return dish_price
+      else:
+          print("Invalid selection! Please enter 1-4.")
+
+def display_result(name, starting_budget,total_spent):
+  print("\n" + "=" * 40)
+  print("          MISSION SUMMARY")
+  print("=" * 40)
+
+  print(f"Player        : {name.title()}")
+  print(f"Total Spent   : RM{total_spent:.2f}")
+  print(f"Final Balance : RM{starting_budget:.2f}")
+
+  if starting_budget >= 0:
+    print(f"\nCONGRATULATIONS!")
+    print(f"You survived all seven days.")
+
+    if starting_budget >= 50:
+      rating = "Financial Wizard 🧙‍♂️"
+    elif starting_budget >= 25:
+      rating = "Pro Saver 👍"
+    else:
+      rating = "Lucky Person 😅"
+
+    print(f"You are a {rating}")
+
+  else:
+    print(f"\nMISSION FAILED!")
+    print(f"You could not survive the full week.")
+
+  print("\nThank you for playing OutOfDebt!")
+
+def main():
+  name, starting_budget = intro()
+  total_spent = 0
+
+  for day in range(1,8):
+    display_status(name,starting_budget,day)
+
+    expense = breakfast_choice() + lunch_choice() + dinner_choice()
+
+    starting_budget -= expense
+    total_spent += expense
+
+    print(f"\nDay {day} completed!")
+    print(f"You spent RM{expense:.2f} today. New balance: RM{starting_budget:.2f}.\n")
+
+  display_result(name, starting_budget,total_spent)
+
+main()
